@@ -41,7 +41,7 @@
 
     .quiz-container {
       margin-top: 20px;
-      background-color: rgba(0, 0, 0, 0.7); /* Чёрная рамка вокруг */
+      background-color: rgba(0, 0, 0, 0.7);
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -51,10 +51,10 @@
     }
 
     .question-container {
-      background-color: rgba(255, 255, 255, 0.8); /* Прозрачный фон внутри */
+      background-color: rgba(255, 255, 255, 0.8);
       padding: 15px;
       border-radius: 8px;
-      border: 2px solid black; /* Чёрная рамка вокруг вопросов */
+      border: 2px solid black;
       color: black;
     }
 
@@ -71,20 +71,20 @@
       font-size: 1rem;
       text-align: left;
       border: 1px solid transparent;
-      background-color: rgba(255, 255, 255, 0.8); /* Прозрачный фон кнопки */
+      background-color: rgba(255, 255, 255, 0.8);
       border-radius: 4px;
-      color: black; /* Черный цвет текста */
+      color: black;
       transition: background-color 0.3s, border-color 0.3s;
     }
 
     .options button.correct {
-      background-color: #d4edda; /* Зелёный фон */
+      background-color: #d4edda;
       border-color: #c3e6cb;
       color: #155724;
     }
 
     .options button.incorrect {
-      background-color: #f8d7da; /* Красный фон */
+      background-color: #f8d7da;
       border-color: #f5c6cb;
       color: #721c24;
     }
@@ -231,9 +231,15 @@
       const buttons = optionsElement.querySelectorAll("button");
       buttons.forEach((btn, index) => {
         if (currentQuestion.correct.includes(index)) {
-          btn.classList.add("correct");
-        } else if (selectedIndex === index || selectedAnswers.includes(index)) {
-          btn.classList.add("incorrect");
+          btn.classList.add("correct"); // Подсветка правильных ответов
+        } else {
+          btn.classList.add("incorrect"); // Подсветка неправильных ответов
+        }
+
+        if (selectedIndex === index || selectedAnswers.includes(index)) {
+          if (!currentQuestion.correct.includes(index)) {
+            btn.classList.add("incorrect"); // Подсветка выбранных, но неправильных ответов
+          }
         }
       });
 
@@ -263,25 +269,24 @@
     }
 
     function showResult() {
-  questionElement.textContent = `${username}, спасибо за участие! Ты набрал ${score} из ${questions.length} баллов.`;
+      questionElement.textContent = `${username}, спасибо за участие! Ты набрал ${score} из ${questions.length} баллов.`;
 
-  // Ссылка на чат Telegram
-  const chatLink = "https://t.me/+jA0lJxAxBgpkMjU5"; // Ваша ссылка на чат
-  const additionalMessage = `Присоединяйтесь к нашему чату: <a href="${chatLink}" target="_blank">Перейти в чат</a>`;
+      // Ссылка на чат Telegram
+      const chatLink = "https://t.me/+jA0lJxAxBgpkMjU5"; // Ваша ссылка на чат
+      const additionalMessage = `Присоединяйтесь к нашему чату: <a href="${chatLink}" target="_blank">Перейти в чат</a>`;
 
-  // Вставляем ссылку на чат в optionsElement
-  optionsElement.innerHTML = additionalMessage;
+      // Вставляем ссылку на чат в optionsElement
+      optionsElement.innerHTML = additionalMessage;
 
-  nextButton.style.display = "none";
-  backToQuizSelectionButton.style.display = "block";
-  
-  // Отправляем результаты в Telegram
-  sendResultToTelegram(username, score, questions.length);
-}
+      nextButton.style.display = "none";
+      backToQuizSelectionButton.style.display = "block";
+      
+      // Отправляем результаты в Telegram
+      sendResultToTelegram(username, score, questions.length);
+    }
 
     function sendResultToTelegram(username, score, totalQuestions) {
       const message = `${username} завершил квиз. Он набрал ${score} из ${totalQuestions} баллов.`;
-
 
       const url = `https://api.telegram.org/bot7549605735:AAGFo3owfV_4C3ZBQCJOySJ2jEbyyMxwYDs/sendMessage?chat_id=-1002425018879&text=${encodeURIComponent(message)}`;
 
