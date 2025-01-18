@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Квиз для общего развития</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #4a90e2;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 1rem;
+      width: 80%;
+      max-width: 400px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #4a90e2;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #357ab7;
+    }
+
+    .quiz-container {
+      margin-top: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .question-container {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid black;
+      color: black;
+    }
+
+    .correct-answer {
+      color: green;
+      font-weight: bold;
+    }
+
+    .incorrect-answer {
+      color: red;
+      font-weight: bold;
+    }
+
+    #next-button {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      background-color: #4a90e2;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #next-button:hover {
+      background-color: #357ab7;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz-container" class="quiz-container">
+    <h1>Квиз для общего развития</h1>
+    <div id="greeting"></div>
+    <div class="question-container">
+      <div id="question" class="question"></div>
+      <input type="text" id="user-answer" placeholder="Введите ваш ответ...">
+      <button id="submit-answer" onclick="checkAnswer()">Проверить ответ</button>
+    </div>
+    <button id="next-button" onclick="loadNextQuestion()">Следующий вопрос</button>
+  </div>
+
+  <script>
+  // Функция для извлечения параметров из URL
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  const username = getQueryParam('name') || 'Гость'; // Получаем имя или используем "Гость" по умолчанию
+
+  // Отобразим приветствие с именем пользователя
+  const greetingElement = document.getElementById('greeting');
+  greetingElement.textContent = `Добро пожаловать, ${username}!`;
+
+
+    const questions = [
+      {
+        question: "Какое из этих животных самое быстрое на Земле?",
+        correct: "Гепард",
+      },
+      {
+        question: "Какая планета считается самой большой в Солнечной системе?",
+        correct: "Юпитер",
+      },
+      {
+        question: "Селенолог занимается изучением...",
+        correct: "Луны",
+      },
+      {
+        question: "Какая река является самой длинной в мире?",
+        correct: "Нил",
+      },
+      {
+        question: "Какое название носит основной отчёт у бухгалтеров?",
+        correct: "Баланс",
+      },
+      {
+        question: "Сколько планет в нашей Солнечной системе?",
+        correct: "8",
+      },
+      {
+        question: "Чем представлен андерграунд в Лондоне",
+        correct: "Метро",
+      },
+      {
+        question: "В этом спорте капитаны не принимают участие в игре. В каком?",
+        correct: "Большой теннис",
+      },
+      {
+        question: "Какая особенная река течет в ЮАР?",
+        correct: "Оранжевая",
+      },
+      {
+        question: "Назовите сказку, где была битва за урожай.",
+        correct: "Репка",
+      },
+      {
+        question: "Сколько человек играет в квинтете?",
+        correct: "5",
+      },
+      {
+        question: "Какая страна имеет наибольшее количество официальных языков?",
+        correct: "ЮАР",
+      },
+      {
+        question: "Какое число является простым?",
+        correct: "11",
+      },
+      {
+        question: "Какой химический элемент имеет символ O?",
+        correct: "Кислород",
+      },
+      {
+        question: "Какая страна является родиной пиццы?",
+        correct: "Италия",
+      },
+      {
+        question: "Театр, по мнению Станиславского, начинается с",
+        correct: "Вешалки",
+      },
+      {
+        question: "Какое вещество из списка является твердым при комнатной температуре?",
+        correct: "Золото",
+      },
+      {
+        question: "Сколько континентов на Земле?",
+        correct: "7",
+      },
+      {
+        question: "Назовите плащ, который создан из прорезиненной непромокаемой ткани",
+        correct: "Макинтош",
+      },
+      {
+        question: "Какой металл используется в производстве ювелирных изделий?",
+        correct: "Золото",
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+  let score = 0;
+
+  const questionElement = document.getElementById("question");
+  const userAnswerElement = document.getElementById("user-answer");
+  const submitButton = document.getElementById("submit-answer");
+  const nextButton = document.getElementById("next-button");
+
+  function loadQuestion() {
+    const currentQuestion = questions[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+    userAnswerElement.value = "";
+    nextButton.style.display = "none";
+    submitButton.style.display = "inline-block";
+  }
+
+  function checkAnswer() {
+    const currentQuestion = questions[currentQuestionIndex];
+    const userAnswer = userAnswerElement.value.trim().toLowerCase();
+    const correctAnswer = currentQuestion.correct.toLowerCase();
+
+    if (userAnswer === correctAnswer) {
+      score++;
+      alert("Правильный ответ!");
+    } else {
+      alert(`Неправильный ответ. Правильный ответ: ${currentQuestion.correct}`);
+    }
+
+    submitButton.style.display = "none";
+    nextButton.style.display = "inline-block";
+  }
+
+  function loadNextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex >= questions.length) {
+      showResult();
+    } else {
+      loadQuestion();
+    }
+  }
+
+  async function sendResultToTelegram(username, score, total) {
+    const token = "AAGFo3owfV_4C3ZBQCJOySJ2jEbyyMxwYDs"; // Токен вашего бота
+    const chatId = "-1002425018879"; // Ваш chat_id
+    const message = `Результаты квиза:\nИмя: ${username}\nПравильных ответов: ${score} из ${total}.`;
+
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("Результат отправлен в Telegram!");
+      } else {
+        console.error("Ошибка отправки в Telegram:", await response.text());
+      }
+    } catch (error) {
+      console.error("Ошибка:", error);
+    }
+  }
+
+  function showResult() {
+    questionElement.textContent = `Спасибо за участие, ${username}! Ты набрал ${score} из ${questions.length} баллов.`;
+    nextButton.style.display = "none";
+
+    // Отправка результата в Telegram
+    sendResultToTelegram(username, score, questions.length);
+  }
+
+  // Инициализация
+  loadQuestion();
+</script>

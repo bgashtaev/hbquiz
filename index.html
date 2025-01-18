@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Выбор квиза</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .quiz-choice button {
+      background-color: #007BFF;
+      font-size: 18px;
+      margin-top: 15px;
+    }
+    .quiz-choice button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Выберите квиз</h1>
+    <p>Привет! Введите своё имя и выберите квиз:</p>
+    <input type="text" id="nickname" placeholder="Ваше имя" />
+    <button onclick="showQuizChoice()">Далее</button>
+    <div class="quiz-choice" id="quiz-choice" style="display: none;">
+      <p>Привет, <span id="username"></span>! Выберите квиз:</p>
+      <button onclick="startSelectedQuiz('quiz')">Квиз 1</button>
+      <button onclick="startSelectedQuiz('quiz2')">Квиз 2</button>
+    </div>
+  </div>
+
+  <script>
+    function showQuizChoice() {
+      const nickname = document.getElementById('nickname').value.trim();
+      if (!nickname) {
+        alert('Пожалуйста, введите имя!');
+        return;
+      }
+      document.getElementById('username').textContent = nickname;
+      document.querySelector('input').style.display = 'none';
+      document.querySelector('button').style.display = 'none';
+      document.getElementById('quiz-choice').style.display = 'block';
+    }
+
+    function startSelectedQuiz(quiz) {
+      const nickname = document.getElementById('nickname').value.trim();
+      const quizUrl = quiz === 'quiz' ? `quiz.html?name=${encodeURIComponent(nickname)}` : `quiz2.html?name=${encodeURIComponent(nickname)}`;
+      window.location.href = quizUrl;
+    }
+  </script>
+</body>
+</html>
